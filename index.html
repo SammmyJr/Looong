@@ -10,7 +10,7 @@
             how long does it go?
           </figcaption>
         <h3 id="pp" class="p-5 display-3">8===================================================</h3>
-        <h3 class="p-5 display-4" style="position: fixed; float: left;"><button class="btn" onclick="restart()"><</button><span id="info">0 inch</span></h3>
+        <h3 class="p-5 display-4 blurred-box" style="position: fixed; float: left;"><button class="btn" onclick="restart()"><</button><span id="info">0 inch</span><button class="btn" onclick="change()">inch/cm</button></h3>
     </body>    
 </html>
 <style>
@@ -23,10 +23,16 @@
 <script>
     var long = 150; //how much to repeat '='
     var inch = 0; //how long it currently is, scroll position divided by 255
+    var cm = false; //how to measure the pixels, defaulted to inch
 
     var pp = document.getElementById("pp"); //element wth pp
     var info = document.getElementById("info"); //element with inch
     var body = document.getElementById("body"); //element that is being scrolled
+
+    function change() { //switch to other measurment
+        cm = !cm;
+        longer();
+    }
 
     function restart() { //scroll all the way back to start
         body.scrollLeft = 0; //set scroll position to 0
@@ -34,7 +40,11 @@
 
     function longer() { //append more long to pp
         pp.innerHTML = pp.innerHTML + "=".repeat(long); //shorthand to append '=' to pp
-        inch = Math.round(body.scrollLeft / 255) + " inch"; //converts current scroll position to inch
-        info.innerHTML = inch; //change info text to inch above
+        inch = (body.scrollLeft / 255).toFixed(2); //converts current scroll position to inch
+        if (cm) {
+            info.innerHTML = (inch * 2.54).toFixed(2) + "cm"; //change info text to cm above from inch
+        } else {
+            info.innerHTML = inch + " inch"; //change info text to inch above
+        }
     };    
 </script>
