@@ -20,9 +20,8 @@
     @-webkit-keyframes tracking-in-contract{0%{letter-spacing:1em;opacity:0}40%{opacity:.6}100%{letter-spacing:normal;opacity:1}}@keyframes tracking-in-contract{0%{letter-spacing:1em;opacity:0}40%{opacity:.6}100%{letter-spacing:normal;opacity:1}}
     @-webkit-keyframes slide-in-left{0%{-webkit-transform:translateX(-1000px);transform:translateX(-1000px);opacity:0}100%{-webkit-transform:translateX(0);transform:translateX(0);opacity:1}}@keyframes slide-in-left{0%{-webkit-transform:translateX(-1000px);transform:translateX(-1000px);opacity:0}100%{-webkit-transform:translateX(0);transform:translateX(0);opacity:1}}
 </style>
-<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script>
-    var long = "================================================================================"; //what to append to the pp
+    var long = 150; //how much to repeat '='
     var inch = 0; //how long it currently is, scroll position divided by 255
 
     var pp = document.getElementById("pp"); //element wth pp
@@ -30,12 +29,12 @@
     var body = document.getElementById("body"); //element that is being scrolled
 
     function restart() { //scroll all the way back to start
-        body.scrollLeft = 0;
+        body.scrollLeft = 0; //set scroll position to 0
     }
 
     function longer() { //append more long to pp
-        pp.innerHTML = pp.innerHTML + long;
-        inch = Math.round(body.scrollLeft / 255) + " inch";
-        info.innerHTML = inch;      
+        pp.innerHTML = pp.innerHTML + "=".repeat(long); //shorthand to append '=' to pp
+        inch = Math.round(body.scrollLeft / 255) + " inch"; //converts current scroll position to inch
+        info.innerHTML = inch; //change info text to inch above
     };    
 </script>
