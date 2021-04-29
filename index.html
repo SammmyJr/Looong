@@ -10,16 +10,17 @@
             how long does it go?
           </figcaption>
         <h3 id="pp" class="p-5 display-3">8===================================================</h3>
-        <h3 class="p-5 display-4 blurred-box" style="position: fixed; float: left;"><button class="btn" onclick="restart()"><</button><span id="info">0 inch</span><button class="btn" onclick="change()">inch/cm</button></h3>
+        <h3 class="p-5 display-4 left" style="position: fixed; float: left;"><button class="btn" onclick="restart()"><</button><span id="info">0 inch</span><button class="btn" onclick="change()">inch/cm</button><br><span class="lead" id="score">High Score: </span></h3>
     </body>    
 </html>
 <style>
     .track{-webkit-animation:tracking-in-contract .8s cubic-bezier(.215,.61,.355,1.000) both;animation:tracking-in-contract .8s cubic-bezier(.215,.61,.355,1.000) both}
     .slide{-webkit-animation:slide-in-left .5s cubic-bezier(.25,.46,.45,.94) both;animation:slide-in-left .5s cubic-bezier(.25,.46,.45,.94) both}
+    .left{-webkit-animation:slide-in-fwd-bl .4s cubic-bezier(.25,.46,.45,.94) both;animation:slide-in-fwd-bl .4s cubic-bezier(.25,.46,.45,.94) both}
 
     @-webkit-keyframes tracking-in-contract{0%{letter-spacing:1em;opacity:0}40%{opacity:.6}100%{letter-spacing:normal;opacity:1}}@keyframes tracking-in-contract{0%{letter-spacing:1em;opacity:0}40%{opacity:.6}100%{letter-spacing:normal;opacity:1}}
     @-webkit-keyframes slide-in-left{0%{-webkit-transform:translateX(-1000px);transform:translateX(-1000px);opacity:0}100%{-webkit-transform:translateX(0);transform:translateX(0);opacity:1}}@keyframes slide-in-left{0%{-webkit-transform:translateX(-1000px);transform:translateX(-1000px);opacity:0}100%{-webkit-transform:translateX(0);transform:translateX(0);opacity:1}}
-</style>
+    @-webkit-keyframes slide-in-fwd-bl{0%{-webkit-transform:translateZ(-1400px) translateY(800px) translateX(-1000px);transform:translateZ(-1400px) translateY(800px) translateX(-1000px);opacity:0}100%{-webkit-transform:translateZ(0) translateY(0) translateX(0);transform:translateZ(0) translateY(0) translateX(0);opacity:1}}@keyframes slide-in-fwd-bl{0%{-webkit-transform:translateZ(-1400px) translateY(800px) translateX(-1000px);transform:translateZ(-1400px) translateY(800px) translateX(-1000px);opacity:0}100%{-webkit-transform:translateZ(0) translateY(0) translateX(0);transform:translateZ(0) translateY(0) translateX(0);opacity:1}}</style>
 <script>
     var long = 150; //how much to repeat '='
     var inch = 0; //how long it currently is, scroll position divided by 255
@@ -28,6 +29,13 @@
     var pp = document.getElementById("pp"); //element wth pp
     var info = document.getElementById("info"); //element with inch
     var body = document.getElementById("body"); //element that is being scrolled
+    var score = document.getElementById("score"); //element that holds users high score
+
+    var highscore = window.localStorage.getItem('score'); //set highscore as localStorage var
+
+    if (highscore == null) { //check if highscore is in localStorage
+        highscore = 0;
+    };
 
     function change() { //switch to other measurment
         cm = !cm;
@@ -41,10 +49,23 @@
     function longer() { //append more long to pp
         pp.innerHTML = pp.innerHTML + "=".repeat(long); //shorthand to append '=' to pp
         inch = (body.scrollLeft / 255).toFixed(2); //converts current scroll position to inch
+        inchdisplay = ""
+
         if (cm) {
-            info.innerHTML = (inch * 2.54).toFixed(2) + "cm"; //change info text to cm above from inch
+            inchdisplay = (inch * 2.54).toFixed(2) + "cm"; //change info text to cm above from inch
         } else {
-            info.innerHTML = inch + " inch"; //change info text to inch above
-        }
-    };    
+            inchdisplay = inch + " inch"; //change info text to inch above
+        };
+
+        if (parseFloat(highscore) < parseFloat(inch)) { //update highscore to be inch if lesser than
+            highscore = inch;
+        };
+
+        window.localStorage.setItem("score", highscore); //update localStorage with score
+
+        info.innerHTML = inchdisplay; //update current length
+        score.innerHTML = "High Score:   " + highscore + " inch"; //update high score
+    };
+
+    longer(); //updates text for first page load
 </script>
